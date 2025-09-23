@@ -13,5 +13,27 @@
 canvas {
     border-radius: 8px;
     border: 2px black solid;
-    background-color: #cccccc;
+    background-color: #dddddd;
+}
+
+@media screen and (max-width: 600px) {
+  button{
+    font-size: 6rem;
+  }
+  button#left {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+  }
+  button#right {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+  } 
+  button#pause {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
+  }
 }

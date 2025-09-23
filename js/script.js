@@ -30,6 +30,29 @@ function setVariables() {
 // Écouteurs d'événements pour les touches
 document.addEventListener('keydown', keyDownHandler);
 document.addEventListener('keyup', keyUpHandler);
+document.getElementById('left').addEventListener('click', () => {
+    leftPressed = true;
+});
+document.getElementById('left').addEventListener('mouseup', () => {
+    leftPressed = false;
+});
+document.getElementById('right').addEventListener('click', () => {
+    rightPressed = true;
+});
+document.getElementById('right').addEventListener('mouseup', () => {
+    rightPressed = false;
+});
+document.getElementById('pause').addEventListener('click', () => {
+    isPaused = !isPaused;
+});
+// document.addEventListener('touchstart', (e) => {
+//     const touchX = e.touches[0].clientX;
+//     if(touchX < canvas.width / 2) {
+//         leftPressed = true;
+//     } else {
+//         rightPressed = true;
+//     }
+// });
 
 function resetBallSpeedIncrease() {
     ballSpeedIncrease = 0.003;
@@ -70,7 +93,7 @@ function keyUpHandler(e) {
 function drawPaddle() {
     ctx.beginPath();
     ctx.rect(PaddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
-    ctx.fillStyle = '#2cdd00ff';
+    ctx.fillStyle = '#00000080';
     ctx.fill();
     ctx.closePath();
 }
@@ -78,7 +101,7 @@ function drawPaddle() {
 function drawBall() {
     ctx.beginPath();
     ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = '#ff5733ff';
+    ctx.fillStyle = '#971c00ff';
     ctx.fill();
     ctx.closePath();
 }
@@ -93,7 +116,7 @@ function drawScore() {
     }
     ctx.font = '32px PT Sans';
     score = Math.floor((Date.now() - gameStartTime) / 1000);
-    ctx.fillStyle = '#0095DD';
+    ctx.fillStyle = '#000000ff';
     if(score < 60) ctx.fillText('Score : ' + score%60 + ' s' + pauseText, 8, 40);
     else if (score < 3600 && score >= 60) ctx.fillText('Score : ' + Math.floor(score/60) + ' min ' + score%60 + ' s' + pauseText, 8, 40);
     else ctx.fillText('Score : ' + Math.floor(score/3600) + ' h ' + Math.floor((score%3600)/60) + ' min ' + score%60 + ' s' + pauseText, 8, 40);
