@@ -82,6 +82,11 @@ document.getElementById('restart').addEventListener('click', () => {
     isPaused = false;
 });
 
+document.getElementById('settingsButton').addEventListener('click', () => {
+    const settingsForm = document.getElementById('settingsForm');
+    document.location.href = "settings.html";
+});
+
 function setText(text) {
     gameText = document.getElementById("game-text");
     if(gameText) {
