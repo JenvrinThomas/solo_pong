@@ -13,12 +13,15 @@ ballSpeedX, ballSpeedY, // vitesse actuelle de la balle
 ballSpeedIncrease, // augmentation progressive de la vitesse de la balle, plus haut : plus difficile
 ballRadius; // rayon de la balle
 let score; 
+let previousScore = 0;
 // booléens pour touches pressées
 let rightPressed, leftPressed, spacePressed;
 // récupérer l'heure exacte de début du jeu pour le calcul
 let gameStartTime;
 // pour l'état du jeu
 let isPaused;
+let hasLost = false;
+let pageJustLoaded = true;
 // pour ajuster
 let sideSpeedDivider; // plus petit, plus diffiile (la balle part sur les côtés plus vite)
 
@@ -51,6 +54,9 @@ function setVariables() {
     gameStartTime = Date.now();
 
     sideSpeedDivider = 10;
+
+    hasLost = false;
+    isPaused = true;
 
 }
 
@@ -125,10 +131,12 @@ function keyDownHandler(e) {
         leftPressed = true;
     }
     else if (e.key === ' ') {
+        if(pageJustLoaded) pageJustLoaded = false;
         spacePressed = true;
         setVariables(); 
         score = 0;
         isPaused = false; // on relance le jeu
+        hasLost = false;
     }
 }
 
@@ -161,16 +169,21 @@ function drawBall() {
 
 function drawScore() {
     let pauseText = '';
-    if(isPaused) {
-        pauseText = ' - Appuyez sur la barre d\'espace pour (re)commencer' + pauseText;
+    if(isPaused && !hasLost) {
+        pauseText = ' - Appuyez sur le bouton Jouer pour reprendre la partie' + pauseText;
         setText('PAUSE' + pauseText);
     }
-    else {
+    else if((hasLost) && !pageJustLoaded) {
+        setText('Vous avez perdu ! Score final : ' + previousScore + ' seconde(s) - Appuyez sur la barre d\'espace pour recommencer');
+    } else if(!pageJustLoaded && !isPaused) {
         pauseText = '';
         score = Math.floor((Date.now() - gameStartTime) / 1000);
         if(score < 60) setText('Score : ' + score%60 + ' s' + pauseText);
         else if (score < 3600 && score >= 60) setText('Score : ' + Math.floor(score/60) + ' min ' + score%60 + ' s' + pauseText);
         else setText('Score : ' + Math.floor(score/3600) + ' h ' + Math.floor((score%3600)/60) + ' min ' + score%60 + ' s' + pauseText);
+    }
+    else{
+        setText('Appuyez sur la barre d\'espace ou sur le bouton Jouer pour commencer');
     }
 }
 
@@ -180,8 +193,18 @@ function resetBall() {
     setVariables();
 }
 
+function playerLost() {
+    previousScore = score;
+    resetBall();
+    hasLost = true;
+}
+
 function update() {
-    if(isPaused) return;
+    if(isPaused || hasLost){
+        document.getElementById('pause').innerText = 'Jouer';
+        return;
+    }
+    document.getElementById('pause').innerText = 'Pause';
 
     if (rightPressed && paddleX < canvas.width - paddleWidth) {
         paddleX += paddleSpeed;
@@ -227,7 +250,7 @@ function update() {
     }
     
     if (ballY + ballRadius > canvas.height) {
-        isPaused = true;
+        playerLost();
     }
 }
 
