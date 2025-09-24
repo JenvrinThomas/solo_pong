@@ -82,6 +82,15 @@ document.getElementById('restart').addEventListener('click', () => {
     isPaused = false;
 });
 
+function setText(text) {
+    gameText = document.getElementById("game-text");
+    if(gameText) {
+        gameText.innerText = text;
+    } else {
+        alert("Erreur : élément 'game-text' non trouvé.");
+    }
+}
+
 function pauseGame() {
     isPaused = !isPaused;
     let pauseDate = 0;
@@ -146,9 +155,9 @@ function drawScore() {
     ctx.font = '32px Roboto Condensed';
     score = Math.floor((Date.now() - gameStartTime) / 1000);
     ctx.fillStyle = '#000000ff';
-    if(score < 60) ctx.fillText('Score : ' + score%60 + ' s' + pauseText, 8, 40);
-    else if (score < 3600 && score >= 60) ctx.fillText('Score : ' + Math.floor(score/60) + ' min ' + score%60 + ' s' + pauseText, 8, 40);
-    else ctx.fillText('Score : ' + Math.floor(score/3600) + ' h ' + Math.floor((score%3600)/60) + ' min ' + score%60 + ' s' + pauseText, 8, 40);
+    if(score < 60) setText('Score : ' + score%60 + ' s' + pauseText);
+    else if (score < 3600 && score >= 60) setText('Score : ' + Math.floor(score/60) + ' min ' + score%60 + ' s' + pauseText);
+    else setText('Score : ' + Math.floor(score/3600) + ' h ' + Math.floor((score%3600)/60) + ' min ' + score%60 + ' s' + pauseText);
 }
 
 function resetBall() {
