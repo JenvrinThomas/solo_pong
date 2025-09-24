@@ -212,6 +212,10 @@ function update() {
     }
     document.getElementById('pause').innerText = 'Pause';
 
+    if(ballSpeedX === 0) {
+        ballSpeedX = (Math.random() * 2 - 1);
+    }
+
     if (rightPressed && paddleX < canvas.width - paddleWidth) {
         paddleX += paddleSpeed;
     } else if (leftPressed && paddleX > 0) {
