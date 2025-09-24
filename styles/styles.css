@@ -140,3 +140,13 @@ Styles pour la page des paramètres
 label{
   vertical-align: top;
 }
+
+#confirmChanges{
+  margin-top: 20px;
+  background-color: blue;
+}
+
+#settingsForm{
+  margin-top: 20px;
+  font-size: 1.2rem;
+}
