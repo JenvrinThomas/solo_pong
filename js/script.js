@@ -121,6 +121,7 @@ function pauseGame() {
             gameStartTime += pausedDuration;
             pauseDate = null;
         }
+        pageJustLoaded = false; 
     }
 }
 
