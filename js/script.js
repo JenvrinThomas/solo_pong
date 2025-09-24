@@ -66,6 +66,24 @@ document.getElementById('right').addEventListener('touchend', () => {
 
 document.getElementById('pause').addEventListener('touchstart', () => {
     isPaused = !isPaused;
+    pauseGame();
+});
+
+document.getElementById('pause').addEventListener('click', () => {
+    pauseGame();
+});
+
+document.getElementById('restart').addEventListener('touchstart', () => {
+    setVariables();
+});
+
+document.getElementById('restart').addEventListener('click', () => {
+    setVariables();
+    isPaused = false;
+});
+
+function pauseGame() {
+    isPaused = !isPaused;
     let pauseDate = 0;
     if (isPaused) {
         let pauseDate = Date.now();
@@ -74,12 +92,7 @@ document.getElementById('pause').addEventListener('touchstart', () => {
         let pausedDuration = resumeDate - pauseDate;
         gameStartTime += pausedDuration;
     }
-});
-
-document.getElementById('restart').addEventListener('touchstart', () => {
-    setVariables();
-    isPaused = false;
-});
+}
 
 function keyDownHandler(e) {
     if (e.key === 'Right' || e.key === 'ArrowRight') {
