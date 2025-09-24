@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paramètres du jeu</title>
+    <title>Réglages du jeu</title>
     <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
     <form id="settingsForm">
-        <h1>Paramètres du jeu</h1>
+        <h1>Réglages du jeu</h1>
+        <h2>Réglages de la partie Bonus</h2>
         <div class="form-group">
             <label for="speedRange">Vitesse de la balle au début de la partie</label>
             <input type="range" id="speedRange" name="speedRange" min="1" max="10" value="4">
@@ -20,9 +21,23 @@
             <label for="ballSpeedIncreaseRange" id="ballSpeedIncreaseValue">0.075</label>
         </div>
         <div class="form-group">
-            <label for="ballColor">Couleur</label>
+            <label for="ballColor">Couleur de la balle</label>
             <input type="color" id="ballColor" name="ballColor" value="#971c00">
         </div>
+        <div class="form-group">
+            <label for="paddleColor">Couleur de la raquette</label>
+            <input type="color" id="paddleColor" name="paddleColor" value="#133749">
+        </div>
+        <div class="form-group">
+            <label for="gameplayAreaBackgroundColor">Couleur de l'arrière-plan de la zone de jeu</label>
+            <input type="color" id="gameplayAreaBackgroundColor" name="gameplayAreaBackgroundColor" value="#dddddd">
+        </div>
+        <div class="form-group">
+            <label for="pageBackgroundColor">Couleur de l'arrière-plan de la page</label>
+            <input type="color" id="pageBackgroundColor" name="pageBackgroundColor" value="#dddddd">
+        </div>
+        
+        
 
 
         <div class="form-group">

@@ -2,6 +2,9 @@ document.getElementById('confirmChanges').addEventListener('click', () => {
     localStorage.setItem('initialBallSpeed', document.getElementById('speedRange').value);
     localStorage.setItem('ballSpeedIncrease', document.getElementById('ballSpeedIncreaseRange').value);
     localStorage.setItem('ballColor', document.getElementById('ballColor').value);
+    localStorage.setItem('paddleColor', document.getElementById('paddleColor').value);
+    localStorage.setItem('gameplayAreaBackgroundColor', document.getElementById('gameplayAreaBackgroundColor').value);
+    localStorage.setItem('pageBackgroundColor', document.getElementById('pageBackgroundColor').value);
     alert("Paramètres enregistrés !");
     document.location.href = "index.html";
 });
@@ -14,6 +17,15 @@ const ballSpeedIncreaseValue = document.getElementById('ballSpeedIncreaseValue')
 
 const ballColor = document.getElementById('ballColor');
 let selectedColor;
+
+const paddleColor = document.getElementById('paddleColor');
+let selectedPaddleColor;
+
+const gameplayAreaBackgroundColor = document.getElementById('gameplayAreaBackgroundColor');
+let selectedGameplayAreaBackgroundColor;
+
+const pageBackgroundColor = document.getElementById('pageBackgroundColor');
+let selectedPageBackgroundColor;
 
 function refreshValues() {
     speedRange.addEventListener('input', () => {
@@ -53,6 +65,39 @@ function getCurrentValues() {
     else {
         selectedColor = localStorage.getItem('ballColor');
         ballColor.value = selectedColor;
+    }
+
+    // et pour la couleur de la raquette
+    if(localStorage.getItem('paddleColor') === null) {
+        localStorage.setItem('paddleColor', '#133749');
+        selectedPaddleColor = localStorage.getItem('paddleColor');
+        paddleColor.value = selectedPaddleColor;
+    }
+    else {
+        selectedPaddleColor = localStorage.getItem('paddleColor');
+        paddleColor.value = selectedPaddleColor;
+    }
+
+    // et pour la couleur de fond de l'aire de jeu
+    if(localStorage.getItem('gameplayAreaBackgroundColor') === null) {
+        localStorage.setItem('gameplayAreaBackgroundColor', '#dddddd');
+        selectedGameplayAreaBackgroundColor = localStorage.getItem('gameplayAreaBackgroundColor');
+        gameplayAreaBackgroundColor.value = selectedGameplayAreaBackgroundColor;
+    }
+    else {
+        selectedGameplayAreaBackgroundColor = localStorage.getItem('gameplayAreaBackgroundColor');
+        gameplayAreaBackgroundColor.value = selectedGameplayAreaBackgroundColor;
+    }
+
+    // et pour la couleur de fond de la page
+    if(localStorage.getItem('pageBackgroundColor') === null) {
+        localStorage.setItem('pageBackgroundColor', '#222222');
+        selectedPageBackgroundColor = localStorage.getItem('pageBackgroundColor');
+        pageBackgroundColor.value = selectedPageBackgroundColor;
+    }
+    else {
+        selectedPageBackgroundColor = localStorage.getItem('pageBackgroundColor');
+        pageBackgroundColor.value = selectedPageBackgroundColor;
     }
 }
 

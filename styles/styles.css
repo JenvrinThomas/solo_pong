@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 
-h1{
+h1, h2{
   color: white;
 }
 
@@ -149,4 +149,18 @@ label{
 #settingsForm{
   margin-top: 20px;
   font-size: 1.2rem;
+}
+
+@media screen and (max-width: 600px) {
+  #settingsForm{
+    font-size: 1rem;
+  }
+  label{
+    display: block;
+    margin-bottom: 4px;
+  }
+  .form-group{
+    margin-bottom: 28px;
+  }
+  
 }

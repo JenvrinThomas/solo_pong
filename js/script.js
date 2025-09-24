@@ -5,7 +5,8 @@ const ctx = canvas.getContext('2d');
 let paddleWidth, // plus large, plus facile
 paddleHeight, // plus haut, moins de risque que la balle passe à travers
 paddleX, // position en X de la raquette
-paddleSpeed; // vitesse de déplacement de la raquette (trop haut ou trop bas : trop dur)
+paddleSpeed, // vitesse de déplacement de la raquette (trop haut ou trop bas : trop dur)
+paddleColor;
 
 // pour la balle
 let ballX, ballY, // position en X et en Y de la balle
@@ -70,6 +71,14 @@ function setVariables() {
     }
     else {
         ballColor = localStorage.getItem('ballColor');
+    }
+
+    if(localStorage.getItem('paddleColor') === null) {
+        localStorage.setItem('paddleColor', '#133749');
+        paddleColor = '#133749';
+    }
+    else {
+        paddleColor = localStorage.getItem('paddleColor');
     }
 
     score = 0;
@@ -182,7 +191,7 @@ function keyUpHandler(e) {
 function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
-    ctx.fillStyle = '#00000080';
+    ctx.fillStyle = paddleColor;
     ctx.fill();
     ctx.closePath();
 }
@@ -324,4 +333,18 @@ else {
     highScore = parseInt(localStorage.getItem('highScore'));
 }
 
+if(localStorage.getItem('gameplayAreaBackgroundColor') === null) {
+    localStorage.setItem('gameplayAreaBackgroundColor', '#dddddd');
+}
+else {
+    canvas.style.backgroundColor = localStorage.getItem('gameplayAreaBackgroundColor');
+}
+
+if(localStorage.getItem('pageBackgroundColor') === null) {
+    localStorage.setItem('pageBackgroundColor', '#222222');
+    document.body.style.backgroundColor = '#222222';
+}
+else {
+    document.body.style.backgroundColor = localStorage.getItem('pageBackgroundColor');
+}
 gameLoop();
