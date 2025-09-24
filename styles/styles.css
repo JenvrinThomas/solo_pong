@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 
-h1{
+h1, h2{
   color: white;
 }
 
@@ -44,11 +44,17 @@ canvas {
 @media screen and (max-width: 600px){
   canvas {
     width: 100%;
+    max-width: 400px;
     height: auto;
+  }
+  button.control{
+    background-color: #00000000;
+    border: none;
+    box-shadow: none;
   }
 }
 
-@media screen and (max-width: 600px) and (min-width: 300px) {
+@media screen and (max-width: 600px) and (min-width: 450px) {
   button.control{
     font-size: 5rem;
   }
@@ -83,7 +89,7 @@ canvas {
   }
 }
 
-@media screen and (max-width: 299px) {
+@media screen and (max-width: 449px) {
   button.control{
     font-size: 3rem;
   }
@@ -149,4 +155,28 @@ label{
 #settingsForm{
   margin-top: 20px;
   font-size: 1.2rem;
+}
+
+@media screen and (max-width: 600px) {
+  #settingsForm{
+    font-size: 1rem;
+  }
+  label{
+    display: block;
+    margin-bottom: 4px;
+  }
+  .form-group{
+    margin-bottom: 28px;
+  }
+  
+}
+
+.form-group{
+  margin: 20px 0;
+  min-height: auto;
+}
+
+.form-group > *{
+  display: inline-block;
+  vertical-align: middle;
 }

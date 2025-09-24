@@ -5,24 +5,31 @@ const ctx = canvas.getContext('2d');
 let paddleWidth, // plus large, plus facile
 paddleHeight, // plus haut, moins de risque que la balle passe à travers
 paddleX, // position en X de la raquette
-paddleSpeed; // vitesse de déplacement de la raquette (trop haut ou trop bas : trop dur)
+paddleSpeed, // vitesse de déplacement de la raquette (trop haut ou trop bas : trop dur)
+paddleColor;
+
 // pour la balle
 let ballX, ballY, // position en X et en Y de la balle
 initialBallSpeedX, initialBallSpeedY, // vitesse initiale de la balle
 ballSpeedX, ballSpeedY, // vitesse actuelle de la balle
 ballSpeedIncrease, // augmentation progressive de la vitesse de la balle, plus haut : plus difficile
-ballRadius; // rayon de la balle
+ballRadius, // rayon de la balle
+ballColor; // couleur de la balle
 let score; 
 let previousScore = 0; //score à la partie précédente
 let highScore = 0;
+
 // booléens pour touches pressées
 let rightPressed, leftPressed, spacePressed;
+
 // récupérer l'heure exacte de début du jeu pour le calcul
 let gameStartTime;
+
 // pour l'état du jeu
 let isPaused;
 let hasLost = false;
 let pageJustLoaded = true;
+
 // pour ajuster
 let sideSpeedDivider; // plus petit, plus difficile (la balle part sur les côtés plus vite)
 
@@ -38,14 +45,41 @@ function setVariables() {
 
     initialBallSpeedX = Math.random() * 6 - 3;
     //initialBallSpeedX = 0; -- pour tester le cas vertical
-    initialBallSpeedY = -4;
+    if(localStorage.getItem('initialBallSpeed') === null) {
+        localStorage.setItem('initialBallSpeed', 4);
+        initialBallSpeedY = -4;
+    }
+    else {
+        initialBallSpeedY = -1*localStorage.getItem('initialBallSpeed');
+    }
 
-    ballSpeedIncrease = 0.075;
+    if(localStorage.getItem('ballSpeedIncrease') === null) {
+        localStorage.setItem('ballSpeedIncrease', 0.075);
+        ballSpeedIncrease = 0.075;
+    }
+    else {
+        ballSpeedIncrease = parseFloat(localStorage.getItem('ballSpeedIncrease'));
+    }
     ballSpeedY = initialBallSpeedY;
     ballSpeedX = initialBallSpeedX;
 
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
+    if(localStorage.getItem('ballColor') === null) {
+        localStorage.setItem('ballColor', '#0095DD');
+        ballColor = '#0095DD';
+    }
+    else {
+        ballColor = localStorage.getItem('ballColor');
+    }
+
+    if(localStorage.getItem('paddleColor') === null) {
+        localStorage.setItem('paddleColor', '#133749');
+        paddleColor = '#133749';
+    }
+    else {
+        paddleColor = localStorage.getItem('paddleColor');
+    }
 
     score = 0;
 
@@ -157,7 +191,7 @@ function keyUpHandler(e) {
 function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
-    ctx.fillStyle = '#00000080';
+    ctx.fillStyle = paddleColor;
     ctx.fill();
     ctx.closePath();
 }
@@ -165,7 +199,7 @@ function drawPaddle() {
 function drawBall() {
     ctx.beginPath();
     ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = '#971c00ff';
+    ctx.fillStyle = ballColor;
     ctx.fill();
     ctx.closePath();
 }
@@ -215,7 +249,6 @@ function increaseBallSpeed() {
             ballSpeedY -= ballSpeedIncrease;
         }
     }
-    console.log(ballSpeedY);
 }
 
 function update() {
@@ -300,4 +333,18 @@ else {
     highScore = parseInt(localStorage.getItem('highScore'));
 }
 
+if(localStorage.getItem('gameplayAreaBackgroundColor') === null) {
+    localStorage.setItem('gameplayAreaBackgroundColor', '#dddddd');
+}
+else {
+    canvas.style.backgroundColor = localStorage.getItem('gameplayAreaBackgroundColor');
+}
+
+if(localStorage.getItem('pageBackgroundColor') === null) {
+    localStorage.setItem('pageBackgroundColor', '#222222');
+    document.body.style.backgroundColor = '#222222';
+}
+else {
+    document.body.style.backgroundColor = localStorage.getItem('pageBackgroundColor');
+}
 gameLoop();
