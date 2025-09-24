@@ -44,6 +44,7 @@ canvas {
 @media screen and (max-width: 600px){
   canvas {
     width: 100%;
+    max-width: 400px;
     height: auto;
   }
   button.control{
@@ -53,7 +54,7 @@ canvas {
   }
 }
 
-@media screen and (max-width: 600px) and (min-width: 300px) {
+@media screen and (max-width: 600px) and (min-width: 450px) {
   button.control{
     font-size: 5rem;
   }
@@ -88,7 +89,7 @@ canvas {
   }
 }
 
-@media screen and (max-width: 299px) {
+@media screen and (max-width: 449px) {
   button.control{
     font-size: 3rem;
   }
