@@ -18,9 +18,18 @@ canvas {
     background-color: #dddddd;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (min-width: 601px) {
   button{
-    font-size: 2rem;
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  button.control{
+    font-size: 5rem;
+  }
+  button:not(.control){
+    font-size: 1.5rem;
   }
   button#left {
     position: fixed;
