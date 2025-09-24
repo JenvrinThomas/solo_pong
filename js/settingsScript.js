@@ -5,10 +5,10 @@ document.getElementById('confirmChanges').addEventListener('click', () => {
 
 function refreshValues() {
     const speedRange = document.getElementById('speedRange');
-    const speedNumber = document.getElementById('speedNumber');
+    const speedValue = document.getElementById('speedValue');
 
     speedRange.addEventListener('input', () => {
-        speedNumber.value = speedRange.value;
+        speedValue.innerHTML = speedRange.value;
     });
 }
 

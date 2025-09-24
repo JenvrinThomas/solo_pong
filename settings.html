@@ -12,8 +12,10 @@
         <div class="form-group">
             <label for="speedRange">Vitesse de la balle au début de la partie</label>
             <input type="range" id="speedRange" name="speedRange" min="1" max="10" value="4">
-            <input type="number" id="speedNumber" name="speedNumber" value="4" disabled>
-            <input type="submit" id="confirmChanges" value="Sauvegarder et revenir au jeu" onclick="document.location.href='index.html'; return false;">
+            <label for="speedRange" id="speedValue">4</label>
+        </div>
+        <div class="form-group">
+            <input type="submit" id="confirmChanges" value="Sauvegarder et revenir au jeu">
         </div>
     </form>
     <script src="js/settingsScript.js"></script>

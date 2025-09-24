@@ -136,3 +136,7 @@ Styles pour la page des paramètres
   color: #eee !important;
   cursor: not-allowed !important;
 }
+
+label{
+  vertical-align: top;
+}

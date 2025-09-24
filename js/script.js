@@ -8,7 +8,8 @@ paddleX, // position en X de la raquette
 paddleSpeed; // vitesse de déplacement de la raquette (trop haut ou trop bas : trop dur)
 // pour la balle
 let ballX, ballY, // position en X et en Y de la balle
-ballSpeedX, ballSpeedY, // vitesse de la balle
+initialBallSpeedX, initialBallSpeedY, // vitesse initiale de la balle
+ballSpeedX, ballSpeedY, // vitesse actuelle de la balle
 ballSpeedIncrease, // augmentation progressive de la vitesse de la balle, plus haut : plus difficile
 ballRadius; // rayon de la balle
 let score; 
@@ -29,9 +30,12 @@ function setVariables() {
     paddleSpeed = 15;
     paddleX = (canvas.width - paddleWidth) / 2;
 
+    initialBallSpeedX = Math.random() * 6 - 3;
+    initialBallSpeedY = -4;
+
     ballSpeedIncrease = 0.003;
-    ballSpeedY = -4;
-    ballSpeedX = Math.random() * 6 - 3;
+    ballSpeedY = initialBallSpeedY;
+    ballSpeedX = initialBallSpeedX;
 
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
@@ -208,12 +212,12 @@ function update() {
     // else {
     //     ballSpeedX -= ballSpeedIncrease;
     // }
-    if(ballSpeedY > 0) {
-        ballSpeedY += ballSpeedIncrease;
-    }
-    else {
-        ballSpeedY -= ballSpeedIncrease;
-    }
+        if(ballSpeedY > 0) {
+            ballSpeedY += ballSpeedIncrease;
+        }
+        else {
+            ballSpeedY -= ballSpeedIncrease;
+        }
 
     if (ballY + ballRadius > canvas.height) {
         isPaused = true;
