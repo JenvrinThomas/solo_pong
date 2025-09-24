@@ -37,9 +37,10 @@ function setVariables() {
     paddleX = (canvas.width - paddleWidth) / 2;
 
     initialBallSpeedX = Math.random() * 6 - 3;
+    //initialBallSpeedX = 0; -- pour tester le cas vertical
     initialBallSpeedY = -4;
 
-    ballSpeedIncrease = 0.003;
+    ballSpeedIncrease = 0.075;
     ballSpeedY = initialBallSpeedY;
     ballSpeedX = initialBallSpeedX;
 
@@ -205,6 +206,18 @@ function playerLost() {
     hasLost = true;
 }
 
+function increaseBallSpeed() {
+    if(Math.abs(ballSpeedY/initialBallSpeedY) < 5) {
+        if(ballSpeedY > 0) {
+            ballSpeedY += ballSpeedIncrease;
+        }
+        else {
+            ballSpeedY -= ballSpeedIncrease;
+        }
+    }
+    console.log(ballSpeedY);
+}
+
 function update() {
     if(isPaused || hasLost){
         document.getElementById('pause').innerText = 'Jouer';
@@ -227,15 +240,18 @@ function update() {
     if (ballX + ballRadius > canvas.width || ballX - ballRadius < 0) {
         //ballSpeedX = -ballSpeedX;
         ballSpeedX = paddleX + paddleWidth/2 - ballX < 0 ? -Math.abs(ballSpeedX) : Math.abs(ballSpeedX);
+        increaseBallSpeed();
     }
     // Collision avec le mur supérieur
     if (ballY - ballRadius < 0) {
         ballSpeedY = -ballSpeedY;
+        increaseBallSpeed();
     }
     // Collision avec la raquette
     if (ballY + ballRadius > canvas.height - paddleHeight - 10) {
         if (ballX > paddleX && ballX < paddleX + paddleWidth) {
             ballSpeedY = -ballSpeedY;
+            increaseBallSpeed();
             if(ballSpeedX > 0) {
                 ballSpeedX = (ballX - paddleX - paddleWidth/2)/sideSpeedDivider;
             }
@@ -250,14 +266,6 @@ function update() {
     // else {
     //     ballSpeedX -= ballSpeedIncrease;
     // }
-    if(Math.abs(ballSpeedY/initialBallSpeedY) < 5) {
-        if(ballSpeedY > 0) {
-            ballSpeedY += ballSpeedIncrease;
-        }
-        else {
-            ballSpeedY -= ballSpeedIncrease;
-        }
-    }
     
     if (ballY + ballRadius > canvas.height) {
         playerLost();
