@@ -164,3 +164,13 @@ label{
   }
   
 }
+
+.form-group{
+  margin: 20px 0;
+  min-height: auto;
+}
+
+.form-group > *{
+  display: inline-block;
+  vertical-align: middle;
+}
