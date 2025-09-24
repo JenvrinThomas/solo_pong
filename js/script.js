@@ -81,8 +81,7 @@ function keyDownHandler(e) {
     }
     else if (e.key === ' ') {
         spacePressed = true;
-        resetBall();
-        resetBallSpeedIncrease();
+        setVariables(); 
         score = 0;
         gameStartTime = Date.now();
         isPaused = false; // on relance le jeu
