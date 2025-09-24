@@ -30,8 +30,8 @@ function setVariables() {
     paddleX = (canvas.width - paddleWidth) / 2;
 
     ballSpeedIncrease = 0.003;
-    ballSpeedX = 0;
     ballSpeedY = -4;
+    ballSpeedX = Math.random() * 6 - 3;
 
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
@@ -72,13 +72,6 @@ document.getElementById('pause').addEventListener('touchstart', () => {
 //         rightPressed = true;
 //     }
 // });
-
-function resetBallSpeedIncrease() {
-}
-
-function resetBallSpeed(){
-//    ballSpeedX = Math.random() * 6 - 3;
-}
 
 function keyDownHandler(e) {
     if (e.key === 'Right' || e.key === 'ArrowRight') {
