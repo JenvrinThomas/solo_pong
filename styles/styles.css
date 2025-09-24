@@ -1,13 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
 
 .pt-sans-regular {
-  font-family: "PT Sans", sans-serif;
+  font-family: "Roboto Condensed", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
 
 * {
-    font-family: 'PT Sans', sans-serif;
+    font-family: 'Roboto Condensed', sans-serif;
+    text-align: center;
 }
 
 canvas {
@@ -36,4 +38,12 @@ canvas {
     transform: translateX(-50%);
     bottom: 10px;
   }
+  canvas {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.shadow{
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
 }

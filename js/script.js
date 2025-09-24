@@ -1,20 +1,37 @@
 const canvas = document.getElementById('pongCanvas');
 const ctx = canvas.getContext('2d');
 
-let paddleWidth, paddleHeight, ballRadius, paddleSpeed;
-let PaddleX, ballX, ballY, ballSpeedX, ballSpeedY, ballSpeedIncrease;
-let score;
+// variables : pr la raquette 
+let paddleWidth, // plus large, plus facile
+paddleHeight, // plus haut, moins de risque que la balle passe à travers
+paddleX, // position en X de la raquette
+paddleSpeed; // vitesse de déplacement de la raquette (trop haut ou trop bas : trop dur)
+// pour la balle
+let ballX, ballY, // position en X et en Y de la balle
+ballSpeedX, ballSpeedY, // vitesse de la balle
+ballSpeedIncrease, // augmentation progressive de la vitesse de la balle, plus haut : plus difficile
+ballRadius; // rayon de la balle
+let score; 
+// booléens pour touches pressées
 let rightPressed, leftPressed, spacePressed;
+// récupérer l'heure exacte de début du jeu pour le calcul
 let gameStartTime = Date.now();
+// pour l'état du jeu
 let isPaused;
+// pour ajuster
+let sideSpeedDivider; // plus petit, plus diffiile (la balle part sur les côtés plus vite)
 
 function setVariables() {
-// Variables du jeu
+// (ré)initialisation ²des variables du jeu
     paddleWidth = 150;
     paddleHeight = 20;
     ballRadius = 10;
     paddleSpeed = 15;
-    PaddleX = (canvas.width - paddleWidth) / 2;
+    paddleX = (canvas.width - paddleWidth) / 2;
+
+    ballSpeedIncrease = 0.003;
+    ballSpeedX = 0;
+    ballSpeedY = -4;
 
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
@@ -25,6 +42,8 @@ function setVariables() {
     leftPressed = false;
     spacePressed = false;
 
+    sideSpeedDivider = 10;
+
 }
 
 // Écouteurs d'événements pour les touches
@@ -33,16 +52,16 @@ document.addEventListener('keyup', keyUpHandler);
 document.getElementById('left').addEventListener('click', () => {
     leftPressed = true;
 });
-document.getElementById('left').addEventListener('mouseup', () => {
+document.getElementById('left').addEventListener('touchend', () => {
     leftPressed = false;
 });
-document.getElementById('right').addEventListener('click', () => {
+document.getElementById('right').addEventListener('touchstart', () => {
     rightPressed = true;
 });
-document.getElementById('right').addEventListener('mouseup', () => {
+document.getElementById('right').addEventListener('touchend', () => {
     rightPressed = false;
 });
-document.getElementById('pause').addEventListener('click', () => {
+document.getElementById('pause').addEventListener('touchstart', () => {
     isPaused = !isPaused;
 });
 // document.addEventListener('touchstart', (e) => {
@@ -55,12 +74,10 @@ document.getElementById('pause').addEventListener('click', () => {
 // });
 
 function resetBallSpeedIncrease() {
-    ballSpeedIncrease = 0.003;
 }
 
 function resetBallSpeed(){
-    ballSpeedX = Math.random() * 6 - 3;
-    ballSpeedY = -4;
+//    ballSpeedX = Math.random() * 6 - 3;
 }
 
 function keyDownHandler(e) {
@@ -92,7 +109,7 @@ function keyUpHandler(e) {
 
 function drawPaddle() {
     ctx.beginPath();
-    ctx.rect(PaddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
+    ctx.rect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
     ctx.fillStyle = '#00000080';
     ctx.fill();
     ctx.closePath();
@@ -114,7 +131,7 @@ function drawScore() {
     else {
         pauseText = '';
     }
-    ctx.font = '32px PT Sans';
+    ctx.font = '32px Roboto Condensed';
     score = Math.floor((Date.now() - gameStartTime) / 1000);
     ctx.fillStyle = '#000000ff';
     if(score < 60) ctx.fillText('Score : ' + score%60 + ' s' + pauseText, 8, 40);
@@ -125,24 +142,23 @@ function drawScore() {
 function resetBall() {
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
-    resetBallSpeed();
-    resetBallSpeedIncrease();
+    setVariables();
 }
 
 function update() {
     if(isPaused) return;
 
-    if (rightPressed && PaddleX < canvas.width - paddleWidth) {
-        PaddleX += paddleSpeed;
-    } else if (leftPressed && PaddleX > 0) {
-        PaddleX -= paddleSpeed;
+    if (rightPressed && paddleX < canvas.width - paddleWidth) {
+        paddleX += paddleSpeed;
+    } else if (leftPressed && paddleX > 0) {
+        paddleX -= paddleSpeed;
     }
     ballX += ballSpeedX;
     ballY += ballSpeedY;
     // Collision avec les murs gauche et droite
     if (ballX + ballRadius > canvas.width || ballX - ballRadius < 0) {
         //ballSpeedX = -ballSpeedX;
-        ballSpeedX = PaddleX + paddleWidth/2 - ballX < 0 ? -Math.abs(ballSpeedX) : Math.abs(ballSpeedX);
+        ballSpeedX = paddleX + paddleWidth/2 - ballX < 0 ? -Math.abs(ballSpeedX) : Math.abs(ballSpeedX);
     }
     // Collision avec le mur supérieur
     if (ballY - ballRadius < 0) {
@@ -150,23 +166,29 @@ function update() {
     }
     // Collision avec la raquette
     if (ballY + ballRadius > canvas.height - paddleHeight - 10) {
-        if (ballX > PaddleX && ballX < PaddleX + paddleWidth) {
+        if (ballX > paddleX && ballX < paddleX + paddleWidth) {
             ballSpeedY = -ballSpeedY;
+            if(ballSpeedX > 0) {
+                ballSpeedX = (ballX - paddleX - paddleWidth/2)/sideSpeedDivider;
+            }
+            else {
+                ballSpeedX = (ballX - paddleX - paddleWidth/2)/sideSpeedDivider;
+            }
         }
     }
-    if(ballSpeedX > 0) {
-        ballSpeedX += ballSpeedIncrease;
-    }
-    else {
-        ballSpeedX -= ballSpeedIncrease;
-    }
+    // if(ballSpeedX > 0) {
+    //     ballSpeedX += ballSpeedIncrease;
+    // }
+    // else {
+    //     ballSpeedX -= ballSpeedIncrease;
+    // }
     if(ballSpeedY > 0) {
         ballSpeedY += ballSpeedIncrease;
     }
     else {
         ballSpeedY -= ballSpeedIncrease;
     }
-    // Si la balle touche le bas du canvas
+
     if (ballY + ballRadius > canvas.height) {
         isPaused = true;
     }
@@ -187,8 +209,6 @@ function gameLoop() {
 
 
 setVariables();
-resetBallSpeedIncrease();
-resetBallSpeed();
 isPaused = true;
 
 gameLoop();
