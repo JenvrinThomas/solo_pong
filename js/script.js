@@ -40,12 +40,19 @@ function setVariables() {
     //initialBallSpeedX = 0; -- pour tester le cas vertical
     if(localStorage.getItem('initialBallSpeed') === null) {
         localStorage.setItem('initialBallSpeed', 4);
+        initialBallSpeedY = -4;
     }
     else {
         initialBallSpeedY = -1*localStorage.getItem('initialBallSpeed');
     }
 
-    ballSpeedIncrease = 0.075;
+    if(localStorage.getItem('ballSpeedIncrease') === null) {
+        localStorage.setItem('ballSpeedIncrease', 0.075);
+        ballSpeedIncrease = 0.075;
+    }
+    else {
+        ballSpeedIncrease = parseFloat(localStorage.getItem('ballSpeedIncrease'));
+    }
     ballSpeedY = initialBallSpeedY;
     ballSpeedX = initialBallSpeedX;
 
