@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+h1{
+  color: white;
+}
+
+.pt-sans-regular {
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+* {
+    font-family: 'Roboto Condensed', sans-serif;
+    text-align: center;
+}
+
+body{
+  background-color: #222222;
+}
+
+canvas {
+    border-radius: 8px;
+    border: 2px black solid;
+    background-color: #dddddd;
+}
+
+@media screen and (min-width: 601px) {
+  div.game-controls{
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px){
+  canvas {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 600px) and (min-width: 300px) {
+  button.control{
+    font-size: 5rem;
+  }
+  button:not(.control){
+    font-size: 1.5rem;
+  }
+  button#left {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+  }
+  button#right {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+  } 
+  button#pause {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
+  }
+
+  div.game-pause-restart, div.game-controls {
+    position: fixed;
+    width: 100%;
+    bottom: 80px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+}
+
+@media screen and (max-width: 299px) {
+  button.control{
+    font-size: 3rem;
+  }
+  button:not(.control){
+    font-size: 1rem;
+  }
+  button#left {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+  }
+  button#right {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+  } 
+  button#pause {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
+  }
+
+  div.game-pause-restart, div.game-controls {
+    position: fixed;
+    width: 100%;
+    bottom: 80px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+}
+
+.shadow{
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+}
