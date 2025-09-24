@@ -22,6 +22,8 @@ let isPaused;
 // pour ajuster
 let sideSpeedDivider; // plus petit, plus diffiile (la balle part sur les côtés plus vite)
 
+let pauseDate = null; 
+
 function setVariables() {
 // (ré)initialisation ²des variables du jeu
     paddleWidth = 150;
@@ -101,14 +103,18 @@ function setText(text) {
 }
 
 function pauseGame() {
-    isPaused = !isPaused;
-    let pauseDate = 0;
-    if (isPaused) {
-        let pauseDate = Date.now();
+    if (!isPaused) {
+        // On met en pause
+        isPaused = true;
+        pauseDate = Date.now();
     } else {
-        let resumeDate = Date.now();
-        let pausedDuration = resumeDate - pauseDate;
-        gameStartTime += pausedDuration;
+        // On reprend
+        isPaused = false;
+        if (pauseDate) {
+            let pausedDuration = Date.now() - pauseDate;
+            gameStartTime += pausedDuration;
+            pauseDate = null;
+        }
     }
 }
 
@@ -157,16 +163,15 @@ function drawScore() {
     let pauseText = '';
     if(isPaused) {
         pauseText = ' - Appuyez sur la barre d\'espace pour (re)commencer' + pauseText;
+        setText('PAUSE' + pauseText);
     }
     else {
         pauseText = '';
+        score = Math.floor((Date.now() - gameStartTime) / 1000);
+        if(score < 60) setText('Score : ' + score%60 + ' s' + pauseText);
+        else if (score < 3600 && score >= 60) setText('Score : ' + Math.floor(score/60) + ' min ' + score%60 + ' s' + pauseText);
+        else setText('Score : ' + Math.floor(score/3600) + ' h ' + Math.floor((score%3600)/60) + ' min ' + score%60 + ' s' + pauseText);
     }
-    ctx.font = '32px Roboto Condensed';
-    score = Math.floor((Date.now() - gameStartTime) / 1000);
-    ctx.fillStyle = '#000000ff';
-    if(score < 60) setText('Score : ' + score%60 + ' s' + pauseText);
-    else if (score < 3600 && score >= 60) setText('Score : ' + Math.floor(score/60) + ' min ' + score%60 + ' s' + pauseText);
-    else setText('Score : ' + Math.floor(score/3600) + ' h ' + Math.floor((score%3600)/60) + ' min ' + score%60 + ' s' + pauseText);
 }
 
 function resetBall() {
