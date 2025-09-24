@@ -212,13 +212,15 @@ function update() {
     // else {
     //     ballSpeedX -= ballSpeedIncrease;
     // }
+    if(Math.abs(ballSpeedY/initialBallSpeedY) < 5) {
         if(ballSpeedY > 0) {
             ballSpeedY += ballSpeedIncrease;
         }
         else {
             ballSpeedY -= ballSpeedIncrease;
         }
-
+    }
+    console.log(ballSpeedY);
     if (ballY + ballRadius > canvas.height) {
         isPaused = true;
     }
