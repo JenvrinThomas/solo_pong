@@ -66,6 +66,14 @@ document.getElementById('right').addEventListener('touchend', () => {
 
 document.getElementById('pause').addEventListener('touchstart', () => {
     isPaused = !isPaused;
+    let pauseDate = 0;
+    if (isPaused) {
+        let pauseDate = Date.now();
+    } else {
+        let resumeDate = Date.now();
+        let pausedDuration = resumeDate - pauseDate;
+        gameStartTime += pausedDuration;
+    }
 });
 
 document.getElementById('restart').addEventListener('touchstart', () => {
