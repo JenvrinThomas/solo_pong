@@ -225,7 +225,7 @@ function update() {
             ballSpeedY -= ballSpeedIncrease;
         }
     }
-    console.log(ballSpeedY);
+    
     if (ballY + ballRadius > canvas.height) {
         isPaused = true;
     }
