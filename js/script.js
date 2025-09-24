@@ -51,7 +51,13 @@ function setVariables() {
     else {
         paddleHeight = parseFloat(localStorage.getItem('paddleHeight'));
     }
-    ballRadius = 10;
+    if(localStorage.getItem('ballRadius') === null) {
+        localStorage.setItem('ballRadius', 10);
+        ballRadius = 10;
+    }
+    else {
+        ballRadius = parseFloat(localStorage.getItem('ballRadius'));
+    }
     if(localStorage.getItem('paddleSpeed') === null) {
         localStorage.setItem('paddleSpeed', 10);
         paddleSpeed = 10;

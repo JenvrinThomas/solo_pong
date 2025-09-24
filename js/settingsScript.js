@@ -8,6 +8,7 @@ document.getElementById('confirmChanges').addEventListener('click', () => {
     localStorage.setItem('paddleSpeed', document.getElementById('paddleSpeed').value);
     localStorage.setItem('paddleHeight', document.getElementById('paddleHeight').value);
     localStorage.setItem('paddleWidth', document.getElementById('paddleWidth').value);
+    localStorage.setItem('ballRadius', document.getElementById('ballRadius').value);
     alert("Paramètres enregistrés !");
     document.location.href = "index.html";
 });
@@ -22,6 +23,7 @@ document.getElementById('resetDefaults').addEventListener('click', () => {
     localStorage.setItem('paddleSpeed', 10);
     localStorage.setItem('paddleHeight', 20);
     localStorage.setItem('paddleWidth', 150);
+    localStorage.setItem('ballRadius', 10);
     alert("Paramètres réinitialisés aux valeurs par défaut !");
     getCurrentValues();
 });
@@ -35,6 +37,12 @@ document.getElementById('otherSettingsTitle').addEventListener('click', () => {
         otherSettingsContent.style.display = 'none';
         document.getElementById('otherSettingsTitle').innerText = "Autres réglages ▼";
     }
+});
+
+document.getElementById('resetScore').addEventListener('click', () => {
+    localStorage.setItem('highScore', 0);
+    alert("Meilleur score réinitialisé.");
+    document.getElementById('highScore').innerText = "Meilleur score : 0";
 });
 
 const speedRange = document.getElementById('speedRange');
@@ -64,6 +72,9 @@ const paddleHeightValue = document.getElementById('paddleHeightValue');
 const paddleWidthRange = document.getElementById('paddleWidth');
 const paddleWidthValue = document.getElementById('paddleWidthValue');
 
+const ballRadiusRange = document.getElementById('ballRadius');
+const ballRadiusValue = document.getElementById('ballRadiusValue');
+
 function refreshValues() {
     speedRange.addEventListener('input', () => {
         speedValue.innerHTML = speedRange.value;
@@ -79,6 +90,9 @@ function refreshValues() {
     });
     paddleWidthRange.addEventListener('input', () => {
         paddleWidthValue.innerHTML = paddleWidthRange.value;
+    });
+    ballRadiusRange.addEventListener('input', () => {
+        ballRadiusValue.innerHTML = ballRadiusRange.value;
     });
 }
 
@@ -113,7 +127,7 @@ function getCurrentValues() {
         ballColor.value = selectedColor;
     }
 
-    // et pour la couleur de la raquette
+    // encore une fois pareil, et pour la couleur de la raquette
     if(localStorage.getItem('paddleColor') === null) {
         localStorage.setItem('paddleColor', '#133749');
         selectedPaddleColor = localStorage.getItem('paddleColor');
@@ -124,7 +138,7 @@ function getCurrentValues() {
         paddleColor.value = selectedPaddleColor;
     }
 
-    // et pour la couleur de fond de l'aire de jeu
+    // une fois de plus, et pour la couleur de fond de l'aire de jeu
     if(localStorage.getItem('gameplayAreaBackgroundColor') === null) {
         localStorage.setItem('gameplayAreaBackgroundColor', '#dddddd');
         selectedGameplayAreaBackgroundColor = localStorage.getItem('gameplayAreaBackgroundColor');
@@ -135,7 +149,7 @@ function getCurrentValues() {
         gameplayAreaBackgroundColor.value = selectedGameplayAreaBackgroundColor;
     }
 
-    // et pour la couleur de fond de la page
+    // et pour la couleur de fond de la page... 
     if(localStorage.getItem('pageBackgroundColor') === null) {
         localStorage.setItem('pageBackgroundColor', '#222222');
         selectedPageBackgroundColor = localStorage.getItem('pageBackgroundColor');
@@ -146,7 +160,7 @@ function getCurrentValues() {
         pageBackgroundColor.value = selectedPageBackgroundColor;
     }
 
-    // et pour la vitesse de la raquette
+    // ...et pour la vitesse de la raquette...
     if(localStorage.getItem('paddleSpeed') === null) {
         localStorage.setItem('paddleSpeed', 10);
         paddleSpeedValue.innerHTML = localStorage.getItem('paddleSpeed');
@@ -175,9 +189,24 @@ function getCurrentValues() {
         paddleWidthValue.innerHTML = localStorage.getItem('paddleWidth');
         paddleWidthRange.value = localStorage.getItem('paddleWidth');
     }
+
+    // et pour le rayon de la balle
+    if(localStorage.getItem('ballRadius') === null) {
+        localStorage.setItem('ballRadius', 10);
+        ballRadiusValue.innerHTML = localStorage.getItem('ballRadius');
+    }
+    else {
+        ballRadiusValue.innerHTML = localStorage.getItem('ballRadius');
+        ballRadiusRange.value = localStorage.getItem('ballRadius');
+    }
 }
 
 document.getElementById('otherSettings').style.display = 'none';
+
+if(localStorage.getItem('highScore') === null) {
+    localStorage.setItem('highScore', 0);
+}
+document.getElementById('highScore').innerText = "Meilleur score : " + localStorage.getItem('highScore');
 
 getCurrentValues();
 refreshValues();
