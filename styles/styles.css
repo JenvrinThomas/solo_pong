@@ -24,7 +24,14 @@ canvas {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 600px){
+  canvas {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 600px) and (min-width: 300px) {
   button.control{
     font-size: 5rem;
   }
@@ -47,10 +54,7 @@ canvas {
     transform: translateX(-50%);
     bottom: 10px;
   }
-  canvas {
-    width: 100%;
-    height: auto;
-  }
+
   div.game-pause-restart, div.game-controls {
     position: fixed;
     width: 100%;
@@ -60,6 +64,42 @@ canvas {
     justify-content: center;
     gap: 20px;
   }
+}
+
+@media screen and (max-width: 299px) {
+  button.control{
+    font-size: 3rem;
+  }
+  button:not(.control){
+    font-size: 1rem;
+  }
+  button#left {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+  }
+  button#right {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+  } 
+  button#pause {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
+  }
+
+  div.game-pause-restart, div.game-controls {
+    position: fixed;
+    width: 100%;
+    bottom: 80px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
 }
 
 .shadow{
