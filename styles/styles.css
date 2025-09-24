@@ -4,6 +4,10 @@ h1{
   color: white;
 }
 
+#settingsForm{
+  display: none;
+}
+
 p{
   color: white;
   font-size: 1rem;
