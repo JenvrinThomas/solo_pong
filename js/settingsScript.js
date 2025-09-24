@@ -5,8 +5,21 @@ document.getElementById('confirmChanges').addEventListener('click', () => {
     localStorage.setItem('paddleColor', document.getElementById('paddleColor').value);
     localStorage.setItem('gameplayAreaBackgroundColor', document.getElementById('gameplayAreaBackgroundColor').value);
     localStorage.setItem('pageBackgroundColor', document.getElementById('pageBackgroundColor').value);
+    localStorage.setItem('paddleSpeed', document.getElementById('paddleSpeed').value);
     alert("Paramètres enregistrés !");
     document.location.href = "index.html";
+});
+
+document.getElementById('resetDefaults').addEventListener('click', () => {
+    localStorage.setItem('initialBallSpeed', 4);
+    localStorage.setItem('ballSpeedIncrease', 0.075);
+    localStorage.setItem('ballColor', '#0095DD');
+    localStorage.setItem('paddleColor', '#133749');
+    localStorage.setItem('gameplayAreaBackgroundColor', '#dddddd');
+    localStorage.setItem('pageBackgroundColor', '#222222');
+    localStorage.setItem('paddleSpeed', 10);
+    alert("Paramètres réinitialisés aux valeurs par défaut !");
+    getCurrentValues();
 });
 
 const speedRange = document.getElementById('speedRange');
@@ -27,12 +40,18 @@ let selectedGameplayAreaBackgroundColor;
 const pageBackgroundColor = document.getElementById('pageBackgroundColor');
 let selectedPageBackgroundColor;
 
+const paddleSpeedRange = document.getElementById('paddleSpeed');
+const paddleSpeedValue = document.getElementById('paddleSpeedValue');
+
 function refreshValues() {
     speedRange.addEventListener('input', () => {
         speedValue.innerHTML = speedRange.value;
     });
     ballSpeedIncreaseRange.addEventListener('input', () => {
         ballSpeedIncreaseValue.innerHTML = ballSpeedIncreaseRange.value;
+    });
+    paddleSpeedRange.addEventListener('input', () => {
+        paddleSpeedValue.innerHTML = paddleSpeedRange.value;
     });
 }
 
@@ -98,6 +117,16 @@ function getCurrentValues() {
     else {
         selectedPageBackgroundColor = localStorage.getItem('pageBackgroundColor');
         pageBackgroundColor.value = selectedPageBackgroundColor;
+    }
+
+    // et pour la vitesse de la raquette
+    if(localStorage.getItem('paddleSpeed') === null) {
+        localStorage.setItem('paddleSpeed', 10);
+        paddleSpeedValue.innerHTML = localStorage.getItem('paddleSpeed');
+    }
+    else {
+        paddleSpeedValue.innerHTML = localStorage.getItem('paddleSpeed');
+        paddleSpeedRange.value = localStorage.getItem('paddleSpeed');
     }
 }
 

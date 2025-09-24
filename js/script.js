@@ -40,7 +40,13 @@ function setVariables() {
     paddleWidth = 150;
     paddleHeight = 20;
     ballRadius = 10;
-    paddleSpeed = 15;
+    if(localStorage.getItem('paddleSpeed') === null) {
+        localStorage.setItem('paddleSpeed', 10);
+        paddleSpeed = 10;
+    }
+    else {
+        paddleSpeed = parseFloat(localStorage.getItem('paddleSpeed'));
+    }
     paddleX = (canvas.width - paddleWidth) / 2;
 
     initialBallSpeedX = Math.random() * 6 - 3;

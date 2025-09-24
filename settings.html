@@ -36,10 +36,20 @@
             <label for="pageBackgroundColor">Couleur de l'arrière-plan de la page</label>
             <input type="color" id="pageBackgroundColor" name="pageBackgroundColor" value="#dddddd">
         </div>
+        <h2>Autres réglages ↓</h2>
+        <div id="otherSettings">
+            <div class="form-group">
+                <label for="paddleSpeed">Vitesse de la raquette</label>
+                <input type="range" id="paddleSpeed" name="paddleSpeed" min="1" max="15" value="10" step="0.5">
+                <p id="paddleSpeedValue">10</p>
+            </div>
+        </div>
         
         
 
-
+        <div class="form-group">
+            <button type="button" id="resetDefaults">Réinitialiser par défaut</button>
+        </div>
         <div class="form-group">
             <button type="button" id="confirmChanges">Enregistrer et quitter</button>
         </div>
