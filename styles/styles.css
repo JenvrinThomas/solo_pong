@@ -20,7 +20,7 @@ canvas {
 
 @media screen and (max-width: 600px) {
   button{
-    font-size: 6rem;
+    font-size: 2rem;
   }
   button#left {
     position: fixed;

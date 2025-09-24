@@ -15,7 +15,7 @@ let score;
 // booléens pour touches pressées
 let rightPressed, leftPressed, spacePressed;
 // récupérer l'heure exacte de début du jeu pour le calcul
-let gameStartTime = Date.now();
+let gameStartTime;
 // pour l'état du jeu
 let isPaused;
 // pour ajuster
@@ -42,6 +42,8 @@ function setVariables() {
     leftPressed = false;
     spacePressed = false;
 
+    gameStartTime = Date.now();
+
     sideSpeedDivider = 10;
 
 }
@@ -49,7 +51,7 @@ function setVariables() {
 // Écouteurs d'événements pour les touches
 document.addEventListener('keydown', keyDownHandler);
 document.addEventListener('keyup', keyUpHandler);
-document.getElementById('left').addEventListener('click', () => {
+document.getElementById('left').addEventListener('touchstart', () => {
     leftPressed = true;
 });
 document.getElementById('left').addEventListener('touchend', () => {
@@ -61,17 +63,15 @@ document.getElementById('right').addEventListener('touchstart', () => {
 document.getElementById('right').addEventListener('touchend', () => {
     rightPressed = false;
 });
+
 document.getElementById('pause').addEventListener('touchstart', () => {
     isPaused = !isPaused;
 });
-// document.addEventListener('touchstart', (e) => {
-//     const touchX = e.touches[0].clientX;
-//     if(touchX < canvas.width / 2) {
-//         leftPressed = true;
-//     } else {
-//         rightPressed = true;
-//     }
-// });
+
+document.getElementById('restart').addEventListener('touchstart', () => {
+    setVariables();
+    isPaused = false;
+});
 
 function keyDownHandler(e) {
     if (e.key === 'Right' || e.key === 'ArrowRight') {
@@ -83,7 +83,6 @@ function keyDownHandler(e) {
         spacePressed = true;
         setVariables(); 
         score = 0;
-        gameStartTime = Date.now();
         isPaused = false; // on relance le jeu
     }
 }
