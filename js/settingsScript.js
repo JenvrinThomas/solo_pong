@@ -1,6 +1,8 @@
 document.getElementById('confirmChanges').addEventListener('click', () => {
     localStorage.setItem('initialBallSpeed', document.getElementById('speedRange').value);
     localStorage.setItem('ballSpeedIncrease', document.getElementById('ballSpeedIncreaseRange').value);
+    localStorage.setItem('ballColor', document.getElementById('ballColor').value);
+    alert("Paramètres enregistrés !");
     document.location.href = "index.html";
 });
 
@@ -10,6 +12,9 @@ const speedValue = document.getElementById('speedValue');
 const ballSpeedIncreaseRange = document.getElementById('ballSpeedIncreaseRange');
 const ballSpeedIncreaseValue = document.getElementById('ballSpeedIncreaseValue');
 
+const ballColor = document.getElementById('ballColor');
+let selectedColor;
+
 function refreshValues() {
     speedRange.addEventListener('input', () => {
         speedValue.innerHTML = speedRange.value;
@@ -17,7 +22,6 @@ function refreshValues() {
     ballSpeedIncreaseRange.addEventListener('input', () => {
         ballSpeedIncreaseValue.innerHTML = ballSpeedIncreaseRange.value;
     });
-    
 }
 
 function getCurrentValues() {
@@ -38,6 +42,17 @@ function getCurrentValues() {
     else {
         ballSpeedIncreaseValue.innerHTML = localStorage.getItem('ballSpeedIncrease');
         ballSpeedIncreaseRange.value = localStorage.getItem('ballSpeedIncrease');
+    }
+
+    // encore pareil, mais pour la couleur de la balle
+    if(localStorage.getItem('ballColor') === null) {
+        localStorage.setItem('ballColor', '#0095DD');
+        selectedColor = localStorage.getItem('ballColor');
+        ballColor.value = selectedColor;
+    }
+    else {
+        selectedColor = localStorage.getItem('ballColor');
+        ballColor.value = selectedColor;
     }
 }
 

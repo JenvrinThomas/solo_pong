@@ -6,23 +6,29 @@ let paddleWidth, // plus large, plus facile
 paddleHeight, // plus haut, moins de risque que la balle passe à travers
 paddleX, // position en X de la raquette
 paddleSpeed; // vitesse de déplacement de la raquette (trop haut ou trop bas : trop dur)
+
 // pour la balle
 let ballX, ballY, // position en X et en Y de la balle
 initialBallSpeedX, initialBallSpeedY, // vitesse initiale de la balle
 ballSpeedX, ballSpeedY, // vitesse actuelle de la balle
 ballSpeedIncrease, // augmentation progressive de la vitesse de la balle, plus haut : plus difficile
-ballRadius; // rayon de la balle
+ballRadius, // rayon de la balle
+ballColor; // couleur de la balle
 let score; 
 let previousScore = 0; //score à la partie précédente
 let highScore = 0;
+
 // booléens pour touches pressées
 let rightPressed, leftPressed, spacePressed;
+
 // récupérer l'heure exacte de début du jeu pour le calcul
 let gameStartTime;
+
 // pour l'état du jeu
 let isPaused;
 let hasLost = false;
 let pageJustLoaded = true;
+
 // pour ajuster
 let sideSpeedDivider; // plus petit, plus difficile (la balle part sur les côtés plus vite)
 
@@ -58,6 +64,13 @@ function setVariables() {
 
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
+    if(localStorage.getItem('ballColor') === null) {
+        localStorage.setItem('ballColor', '#0095DD');
+        ballColor = '#0095DD';
+    }
+    else {
+        ballColor = localStorage.getItem('ballColor');
+    }
 
     score = 0;
 
@@ -177,7 +190,7 @@ function drawPaddle() {
 function drawBall() {
     ctx.beginPath();
     ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = '#971c00ff';
+    ctx.fillStyle = ballColor;
     ctx.fill();
     ctx.closePath();
 }
