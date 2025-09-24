@@ -38,7 +38,12 @@ function setVariables() {
 
     initialBallSpeedX = Math.random() * 6 - 3;
     //initialBallSpeedX = 0; -- pour tester le cas vertical
-    initialBallSpeedY = -4;
+    if(localStorage.getItem('initialBallSpeed') === null) {
+        localStorage.setItem('initialBallSpeed', 4);
+    }
+    else {
+        initialBallSpeedY = -1*localStorage.getItem('initialBallSpeed');
+    }
 
     ballSpeedIncrease = 0.075;
     ballSpeedY = initialBallSpeedY;
@@ -215,7 +220,6 @@ function increaseBallSpeed() {
             ballSpeedY -= ballSpeedIncrease;
         }
     }
-    console.log(ballSpeedY);
 }
 
 function update() {
