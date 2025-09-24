@@ -8,18 +8,25 @@ paddleX, // position en X de la raquette
 paddleSpeed; // vitesse de déplacement de la raquette (trop haut ou trop bas : trop dur)
 // pour la balle
 let ballX, ballY, // position en X et en Y de la balle
-ballSpeedX, ballSpeedY, // vitesse de la balle
+initialBallSpeedX, initialBallSpeedY, // vitesse initiale de la balle
+ballSpeedX, ballSpeedY, // vitesse actuelle de la balle
 ballSpeedIncrease, // augmentation progressive de la vitesse de la balle, plus haut : plus difficile
 ballRadius; // rayon de la balle
 let score; 
+let previousScore = 0; //score à la partie précédente
+let highScore = 0;
 // booléens pour touches pressées
 let rightPressed, leftPressed, spacePressed;
 // récupérer l'heure exacte de début du jeu pour le calcul
 let gameStartTime;
 // pour l'état du jeu
 let isPaused;
+let hasLost = false;
+let pageJustLoaded = true;
 // pour ajuster
-let sideSpeedDivider; // plus petit, plus diffiile (la balle part sur les côtés plus vite)
+let sideSpeedDivider; // plus petit, plus difficile (la balle part sur les côtés plus vite)
+
+let pauseDate = null; 
 
 function setVariables() {
 // (ré)initialisation ²des variables du jeu
@@ -29,9 +36,13 @@ function setVariables() {
     paddleSpeed = 15;
     paddleX = (canvas.width - paddleWidth) / 2;
 
-    ballSpeedIncrease = 0.003;
-    ballSpeedY = -4;
-    ballSpeedX = Math.random() * 6 - 3;
+    initialBallSpeedX = Math.random() * 6 - 3;
+    //initialBallSpeedX = 0; -- pour tester le cas vertical
+    initialBallSpeedY = -4;
+
+    ballSpeedIncrease = 0.075;
+    ballSpeedY = initialBallSpeedY;
+    ballSpeedX = initialBallSpeedX;
 
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
@@ -45,6 +56,9 @@ function setVariables() {
     gameStartTime = Date.now();
 
     sideSpeedDivider = 10;
+
+    hasLost = false;
+    isPaused = true;
 
 }
 
@@ -82,6 +96,11 @@ document.getElementById('restart').addEventListener('click', () => {
     isPaused = false;
 });
 
+document.getElementById('settingsButton').addEventListener('click', () => {
+    const settingsForm = document.getElementById('settingsForm');
+    document.location.href = "settings.html";
+});
+
 function setText(text) {
     gameText = document.getElementById("game-text");
     if(gameText) {
@@ -92,14 +111,19 @@ function setText(text) {
 }
 
 function pauseGame() {
-    isPaused = !isPaused;
-    let pauseDate = 0;
-    if (isPaused) {
-        let pauseDate = Date.now();
+    if (!isPaused) {
+        // On met en pause
+        isPaused = true;
+        pauseDate = Date.now();
     } else {
-        let resumeDate = Date.now();
-        let pausedDuration = resumeDate - pauseDate;
-        gameStartTime += pausedDuration;
+        // On reprend
+        isPaused = false;
+        if (pauseDate) {
+            let pausedDuration = Date.now() - pauseDate;
+            gameStartTime += pausedDuration;
+            pauseDate = null;
+        }
+        pageJustLoaded = false; 
     }
 }
 
@@ -110,10 +134,12 @@ function keyDownHandler(e) {
         leftPressed = true;
     }
     else if (e.key === ' ') {
+        if(pageJustLoaded) pageJustLoaded = false;
         spacePressed = true;
         setVariables(); 
         score = 0;
         isPaused = false; // on relance le jeu
+        hasLost = false;
     }
 }
 
@@ -146,18 +172,22 @@ function drawBall() {
 
 function drawScore() {
     let pauseText = '';
-    if(isPaused) {
-        pauseText = ' - Appuyez sur la barre d\'espace pour (re)commencer' + pauseText;
+    if(isPaused && !hasLost) {
+        pauseText = ' - Appuyez sur le bouton Jouer pour reprendre la partie' + pauseText;
+        setText('PAUSE' + pauseText);
     }
-    else {
+    else if((hasLost) && !pageJustLoaded) {
+        setText('Vous avez perdu ! Score final : ' + previousScore + ' seconde(s). Record : ' + highScore + ' seconde(s) - Appuyez sur la barre d\'espace pour recommencer');
+    } else if(!pageJustLoaded && !isPaused) {
         pauseText = '';
+        score = Math.floor((Date.now() - gameStartTime) / 1000);
+        if(score < 60) setText('Score : ' + score%60 + ' s' + pauseText);
+        else if (score < 3600 && score >= 60) setText('Score : ' + Math.floor(score/60) + ' min ' + score%60 + ' s' + pauseText);
+        else setText('Score : ' + Math.floor(score/3600) + ' h ' + Math.floor((score%3600)/60) + ' min ' + score%60 + ' s' + pauseText);
     }
-    ctx.font = '32px Roboto Condensed';
-    score = Math.floor((Date.now() - gameStartTime) / 1000);
-    ctx.fillStyle = '#000000ff';
-    if(score < 60) setText('Score : ' + score%60 + ' s' + pauseText);
-    else if (score < 3600 && score >= 60) setText('Score : ' + Math.floor(score/60) + ' min ' + score%60 + ' s' + pauseText);
-    else setText('Score : ' + Math.floor(score/3600) + ' h ' + Math.floor((score%3600)/60) + ' min ' + score%60 + ' s' + pauseText);
+    else{
+        setText('Appuyez sur la barre d\'espace ou sur le bouton Jouer pour commencer. Record : ' + highScore + ' seconde(s)');
+    }
 }
 
 function resetBall() {
@@ -166,8 +196,38 @@ function resetBall() {
     setVariables();
 }
 
+function playerLost() {
+    previousScore = score;
+    if(previousScore > highScore) {
+        highScore = previousScore;
+        localStorage.setItem('highScore', highScore);
+    }
+    resetBall();
+    hasLost = true;
+}
+
+function increaseBallSpeed() {
+    if(Math.abs(ballSpeedY/initialBallSpeedY) < 5) {
+        if(ballSpeedY > 0) {
+            ballSpeedY += ballSpeedIncrease;
+        }
+        else {
+            ballSpeedY -= ballSpeedIncrease;
+        }
+    }
+    console.log(ballSpeedY);
+}
+
 function update() {
-    if(isPaused) return;
+    if(isPaused || hasLost){
+        document.getElementById('pause').innerText = 'Jouer';
+        return;
+    }
+    document.getElementById('pause').innerText = 'Pause';
+
+    if(ballSpeedX === 0) {
+        ballSpeedX = (Math.random() * 2 - 1);
+    }
 
     if (rightPressed && paddleX < canvas.width - paddleWidth) {
         paddleX += paddleSpeed;
@@ -180,15 +240,18 @@ function update() {
     if (ballX + ballRadius > canvas.width || ballX - ballRadius < 0) {
         //ballSpeedX = -ballSpeedX;
         ballSpeedX = paddleX + paddleWidth/2 - ballX < 0 ? -Math.abs(ballSpeedX) : Math.abs(ballSpeedX);
+        increaseBallSpeed();
     }
     // Collision avec le mur supérieur
     if (ballY - ballRadius < 0) {
         ballSpeedY = -ballSpeedY;
+        increaseBallSpeed();
     }
     // Collision avec la raquette
     if (ballY + ballRadius > canvas.height - paddleHeight - 10) {
         if (ballX > paddleX && ballX < paddleX + paddleWidth) {
             ballSpeedY = -ballSpeedY;
+            increaseBallSpeed();
             if(ballSpeedX > 0) {
                 ballSpeedX = (ballX - paddleX - paddleWidth/2)/sideSpeedDivider;
             }
@@ -203,15 +266,9 @@ function update() {
     // else {
     //     ballSpeedX -= ballSpeedIncrease;
     // }
-    if(ballSpeedY > 0) {
-        ballSpeedY += ballSpeedIncrease;
-    }
-    else {
-        ballSpeedY -= ballSpeedIncrease;
-    }
-
+    
     if (ballY + ballRadius > canvas.height) {
-        isPaused = true;
+        playerLost();
     }
 }
 
@@ -229,7 +286,18 @@ function gameLoop() {
 }
 
 
+
+
+
+
 setVariables();
 isPaused = true;
+
+if(localStorage.getItem('highScore') === null) {    
+    localStorage.setItem('highScore', 0);
+}
+else {
+    highScore = parseInt(localStorage.getItem('highScore'));
+}
 
 gameLoop();
