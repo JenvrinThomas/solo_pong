@@ -13,7 +13,8 @@ ballSpeedX, ballSpeedY, // vitesse actuelle de la balle
 ballSpeedIncrease, // augmentation progressive de la vitesse de la balle, plus haut : plus difficile
 ballRadius; // rayon de la balle
 let score; 
-let previousScore = 0;
+let previousScore = 0; //score à la partie précédente
+let highScore = 0;
 // booléens pour touches pressées
 let rightPressed, leftPressed, spacePressed;
 // récupérer l'heure exacte de début du jeu pour le calcul
@@ -23,7 +24,7 @@ let isPaused;
 let hasLost = false;
 let pageJustLoaded = true;
 // pour ajuster
-let sideSpeedDivider; // plus petit, plus diffiile (la balle part sur les côtés plus vite)
+let sideSpeedDivider; // plus petit, plus difficile (la balle part sur les côtés plus vite)
 
 let pauseDate = null; 
 
@@ -175,7 +176,7 @@ function drawScore() {
         setText('PAUSE' + pauseText);
     }
     else if((hasLost) && !pageJustLoaded) {
-        setText('Vous avez perdu ! Score final : ' + previousScore + ' seconde(s) - Appuyez sur la barre d\'espace pour recommencer');
+        setText('Vous avez perdu ! Score final : ' + previousScore + ' seconde(s). Record : ' + highScore + ' seconde(s) - Appuyez sur la barre d\'espace pour recommencer');
     } else if(!pageJustLoaded && !isPaused) {
         pauseText = '';
         score = Math.floor((Date.now() - gameStartTime) / 1000);
@@ -184,7 +185,7 @@ function drawScore() {
         else setText('Score : ' + Math.floor(score/3600) + ' h ' + Math.floor((score%3600)/60) + ' min ' + score%60 + ' s' + pauseText);
     }
     else{
-        setText('Appuyez sur la barre d\'espace ou sur le bouton Jouer pour commencer');
+        setText('Appuyez sur la barre d\'espace ou sur le bouton Jouer pour commencer. Record : ' + highScore + ' seconde(s)');
     }
 }
 
@@ -196,6 +197,10 @@ function resetBall() {
 
 function playerLost() {
     previousScore = score;
+    if(previousScore > highScore) {
+        highScore = previousScore;
+        localStorage.setItem('highScore', highScore);
+    }
     resetBall();
     hasLost = true;
 }
@@ -269,7 +274,18 @@ function gameLoop() {
 }
 
 
+
+
+
+
 setVariables();
 isPaused = true;
+
+if(localStorage.getItem('highScore') === null) {    
+    localStorage.setItem('highScore', 0);
+}
+else {
+    highScore = parseInt(localStorage.getItem('highScore'));
+}
 
 gameLoop();
