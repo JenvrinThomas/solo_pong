@@ -6,6 +6,8 @@ document.getElementById('confirmChanges').addEventListener('click', () => {
     localStorage.setItem('gameplayAreaBackgroundColor', document.getElementById('gameplayAreaBackgroundColor').value);
     localStorage.setItem('pageBackgroundColor', document.getElementById('pageBackgroundColor').value);
     localStorage.setItem('paddleSpeed', document.getElementById('paddleSpeed').value);
+    localStorage.setItem('paddleHeight', document.getElementById('paddleHeight').value);
+    localStorage.setItem('paddleWidth', document.getElementById('paddleWidth').value);
     alert("Paramètres enregistrés !");
     document.location.href = "index.html";
 });
@@ -18,8 +20,21 @@ document.getElementById('resetDefaults').addEventListener('click', () => {
     localStorage.setItem('gameplayAreaBackgroundColor', '#dddddd');
     localStorage.setItem('pageBackgroundColor', '#222222');
     localStorage.setItem('paddleSpeed', 10);
+    localStorage.setItem('paddleHeight', 20);
+    localStorage.setItem('paddleWidth', 150);
     alert("Paramètres réinitialisés aux valeurs par défaut !");
     getCurrentValues();
+});
+
+document.getElementById('otherSettingsTitle').addEventListener('click', () => {
+    const otherSettingsContent = document.getElementById('otherSettings');
+    if (otherSettingsContent.style.display === 'none') {
+        otherSettingsContent.style.display = 'block';
+        document.getElementById('otherSettingsTitle').innerText = "Autres réglages ▲";
+    } else {
+        otherSettingsContent.style.display = 'none';
+        document.getElementById('otherSettingsTitle').innerText = "Autres réglages ▼";
+    }
 });
 
 const speedRange = document.getElementById('speedRange');
@@ -43,6 +58,12 @@ let selectedPageBackgroundColor;
 const paddleSpeedRange = document.getElementById('paddleSpeed');
 const paddleSpeedValue = document.getElementById('paddleSpeedValue');
 
+const paddleHeightRange = document.getElementById('paddleHeight');
+const paddleHeightValue = document.getElementById('paddleHeightValue');
+
+const paddleWidthRange = document.getElementById('paddleWidth');
+const paddleWidthValue = document.getElementById('paddleWidthValue');
+
 function refreshValues() {
     speedRange.addEventListener('input', () => {
         speedValue.innerHTML = speedRange.value;
@@ -52,6 +73,12 @@ function refreshValues() {
     });
     paddleSpeedRange.addEventListener('input', () => {
         paddleSpeedValue.innerHTML = paddleSpeedRange.value;
+    });
+    paddleHeightRange.addEventListener('input', () => {
+        paddleHeightValue.innerHTML = paddleHeightRange.value;
+    });
+    paddleWidthRange.addEventListener('input', () => {
+        paddleWidthValue.innerHTML = paddleWidthRange.value;
     });
 }
 
@@ -128,7 +155,29 @@ function getCurrentValues() {
         paddleSpeedValue.innerHTML = localStorage.getItem('paddleSpeed');
         paddleSpeedRange.value = localStorage.getItem('paddleSpeed');
     }
+
+    // et pour la hauteur de la raquette
+    if(localStorage.getItem('paddleHeight') === null) {
+        localStorage.setItem('paddleHeight', 20);
+        paddleHeightValue.innerHTML = localStorage.getItem('paddleHeight');
+    }
+    else {
+        paddleHeightValue.innerHTML = localStorage.getItem('paddleHeight');
+        paddleHeightRange.value = localStorage.getItem('paddleHeight');
+    }
+
+    // et pour la largeur de la raquette
+    if(localStorage.getItem('paddleWidth') === null) {
+        localStorage.setItem('paddleWidth', 150);
+        paddleWidthValue.innerHTML = localStorage.getItem('paddleWidth');
+    }
+    else {
+        paddleWidthValue.innerHTML = localStorage.getItem('paddleWidth');
+        paddleWidthRange.value = localStorage.getItem('paddleWidth');
+    }
 }
+
+document.getElementById('otherSettings').style.display = 'none';
 
 getCurrentValues();
 refreshValues();

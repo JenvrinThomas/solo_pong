@@ -180,3 +180,7 @@ label{
   display: inline-block;
   vertical-align: middle;
 }
+
+#otherSettings{
+  display: none;
+}

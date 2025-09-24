@@ -37,8 +37,20 @@ let pauseDate = null;
 
 function setVariables() {
 // (ré)initialisation ²des variables du jeu
-    paddleWidth = 150;
-    paddleHeight = 20;
+    if(localStorage.getItem('paddleWidth') === null) {
+        localStorage.setItem('paddleWidth', 75);
+        paddleWidth = 75;
+    }
+    else {
+        paddleWidth = parseFloat(localStorage.getItem('paddleWidth'));
+    }
+    if(localStorage.getItem('paddleHeight') === null) {
+        localStorage.setItem('paddleHeight', 20);
+        paddleHeight = 20;
+    }
+    else {
+        paddleHeight = parseFloat(localStorage.getItem('paddleHeight'));
+    }
     ballRadius = 10;
     if(localStorage.getItem('paddleSpeed') === null) {
         localStorage.setItem('paddleSpeed', 10);
