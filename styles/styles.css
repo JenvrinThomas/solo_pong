@@ -36,8 +36,8 @@ canvas {
 }
 
 @media screen and (min-width: 601px) {
-  div.game-controls{
-    display: none;
+  .game-controls{
+    display: none !important;
   }
 }
 
