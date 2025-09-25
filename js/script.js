@@ -116,7 +116,7 @@ function setVariables() {
     sideSpeedDivider = 10;
 
     hasLost = false;
-    isPaused = true;
+    //isPaused = true;
 
 }
 
@@ -180,6 +180,11 @@ function pauseGame() {
             let pausedDuration = Date.now() - pauseDate;
             gameStartTime += pausedDuration;
             pauseDate = null;
+        }
+        if(pageJustLoaded){
+            setVariables();
+            gameStartTime = Date.now();
+            score = 0;
         }
         pageJustLoaded = false; 
     }
